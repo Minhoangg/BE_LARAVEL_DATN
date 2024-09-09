@@ -1,6 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\client\auth\LoginController;
+use App\Http\Controllers\client\auth\ClientLoginController;
 
-Route::post('/login',[LoginController::class, 'LoginHandler']);
+Route::post('/login',[ClientLoginController::class, 'LoginHandler']);

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\admin\auth;
+namespace App\Http\Resources\client\auth;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LoginResource extends JsonResource
+class ClientRegisterResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +15,8 @@ class LoginResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'email' => $this->email,
             'name' => $this->name,
+            'email' => $this->email,
             'phone_number' => $this->phone_number,
         ];
     }
