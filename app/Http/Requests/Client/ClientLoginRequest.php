@@ -55,6 +55,6 @@ class ClientLoginRequest extends FormRequest
         throw new HttpResponseException(response()->json([
             'success' => false,
             'errors' => $validator->errors()
-        ], 422));
+        ], 409));
     }
 }

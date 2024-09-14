@@ -7,6 +7,10 @@ use App\Http\Resources\client\auth\ClientLoginResource;
 use App\Http\Requests\Client\ClientLoginRequest;
 use Illuminate\Support\Facades\auth;
 use App\Helpers\CreateTokenHelper;
+use App\Helpers\SmsOtpHelper;
+use Illuminate\Http\Request;
+use App\Models\User;
+
 
 
 class ClientLoginController extends Controller
@@ -17,16 +21,63 @@ class ClientLoginController extends Controller
         $credentials = $request->only('phone_number', 'password');
 
         if (!Auth::guard('user')->attempt($credentials)) {
-            return $this->FailedLoginResponse();
+            return $this->FailedAuthenticationResponse();
         }
 
-        $token = CreateTokenHelper::createTokenClient(Auth::guard('user')->user());
+        $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 
-        return $this->SuccessLoginResponse($token);
+        $this->SaveOtp($otp, $request->only('phone_number'));
+
+        $responseSendSms =  SmsOtpHelper::sendSms($request->phone_number,  $otp);
+
+        if ($responseSendSms) {
+            return $this->ResponseSms($responseSendSms, $otp);
+        }
+
+        return $this->SuccessAuthenticationResponse($otp);
     }
 
+    private function SaveOtp($otp ,$phone_number){
+        $user = User::where('phone_number', $phone_number)->first();
 
-    public function FailedLoginResponse()
+        $user->optCode = $otp;
+
+        $user->save();
+    }
+
+    public function VerifyOtp(Request $request)
+    {
+
+        $phoneNumber = $request->input('phone_number');
+        $otpFromRequest = $request->input('code');
+
+        $user = User::where('phone_number', $phoneNumber)->first();
+
+        if (!$user) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'User not found',
+            ], 404);
+        }
+
+        if ($otpFromRequest == $user->optCode) {
+
+            $token = CreateTokenHelper::createTokenClient($user);
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'OTP verified successfully',
+                'token' => $token,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Invalid OTP',
+            ], 400);
+        }
+    }
+
+    private function FailedAuthenticationResponse()
     {
         return response()->json([
             'error' => 'Authentication failed',
@@ -34,16 +85,29 @@ class ClientLoginController extends Controller
         ], 401);
     }
 
-
-    private function SuccessLoginResponse(string $token)
+    private function ResponseSms($responseSendSms, $otp)
     {
-        $user = Auth::guard('user')->user();
+        if ($responseSendSms['CodeResult'] == '100') {
+            return response()->json([
+                'success' => true,
+                'message' => 'OTP send successfully',
+                'otp' => $otp
+            ], 200);
+        }
 
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to send OTP',
+                'error_code' => $responseSendSms['code']
+            ], 400);
+    }
+
+    private function SuccessAuthenticationResponse($otp)
+    {
         return response()->json([
             'status_code' => 200,
-            'message' => 'Login successful',
-            'user' => new ClientLoginResource($user),
-            'access_token' => $token,
+            'message' => 'Mã otp đã được gửi đến số điện thoại của bạn',
+            'otp' => $otp,
         ]);
     }
 }

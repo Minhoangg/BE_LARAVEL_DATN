@@ -28,7 +28,6 @@ class ClientRegisterController extends Controller
         return $this->SuccessRegisterResponse($dataRequest['phone_number']);
     }
 
-
     public function FailedRegisterResponse()
     {
         return response()->json([
@@ -36,7 +35,6 @@ class ClientRegisterController extends Controller
             'status_code' => 401,
         ], 401);
     }
-
 
     private function SuccessRegisterResponse($phone_number)
     {
@@ -46,6 +44,6 @@ class ClientRegisterController extends Controller
             'status_code' => 200,
             'message' => 'Register successful',
             'user' => new ClientRegisterResource($user),
-        ]);
+        ], 200);
     }
 }
