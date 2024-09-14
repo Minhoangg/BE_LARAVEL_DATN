@@ -18,7 +18,7 @@ class Posts_Seeder extends Seeder
             [
                 'title' => '6 Cách Đơn Giản Để Viết Bài Viết Hiệu Quả Và Chất Lượng',
                 'id_admin_account' => 1,
-                'category_id' => 1,
+                'categories_id' => 1,
                 'tag' => 'tag',
                 'content' => 'nôi dung',
                 'author' => 'minhnhut', // Mã hóa mật khẩu
