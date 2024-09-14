@@ -1,6 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\admin\auth\LoginController;
+use App\Http\Controllers\admin\auth\AminLoginController;
 
-Route::post('/login',[LoginController::class, 'LoginHandler']);
+Route::post('/auth/login',[AminLoginController::class, 'LoginHandler']);

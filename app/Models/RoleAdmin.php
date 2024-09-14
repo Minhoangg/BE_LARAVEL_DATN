@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AdminModel extends Model
+class RoleAdmin extends Model
 {
     use HasFactory;
 
-    // tài khoản admin
+    protected $table = 'role_admin';
+
+    protected $fillable = [
+        'name',
+        'description',
+    ];
 }

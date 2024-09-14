@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\client\auth;
+namespace App\Http\Controllers\admin\auth;
 
 use App\Http\Controllers\Controller;
 use App\Helpers\CreateTokenHelper;
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Http\Resources\client\auth\ClientLoginResource;
+use App\Models\AdminAccountModel;
+use App\Http\Resources\admin\auth\AdminLoginResource;
+
 class VerifyOtpController extends Controller
 {
     public function verifyOtp(Request $request)
@@ -14,7 +15,7 @@ class VerifyOtpController extends Controller
         $phoneNumber = $request->input('phone_number');
         $otpFromRequest = $request->input('code');
 
-        $user = User::where('phone_number', $phoneNumber)->first();
+        $user = AdminAccountModel::where('phone_number', $phoneNumber)->first();
 
         if (!$user) {
             return $this->errorResponse('User not found', 404);
@@ -28,19 +29,19 @@ class VerifyOtpController extends Controller
 
         $user->save();
 
-        $token = CreateTokenHelper::createTokenClient($user);
+        $token = CreateTokenHelper::createTokenAdmin($user);
 
-        return $this->successResponse($token, $user);
+        return $this->successResponse( $token, $user);
     }
 
-    private function successResponse($token, $user )
+    private function successResponse($token, $user)
     {
-        return response()->json([
+        return response()->json(array_merge([
             'status' => 200,
             'message' => 'OTP verified successfully',
             'token' => $token,
-            'user' => new ClientLoginResource($user),
-        ], 200);
+            'user' => new AdminLoginResource($user),
+        ]),200);
     }
 
     private function errorResponse($message, $statusCode)

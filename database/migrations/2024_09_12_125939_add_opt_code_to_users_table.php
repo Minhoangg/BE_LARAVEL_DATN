@@ -12,14 +12,14 @@ return new class extends Migration
     public function up()
 {
     Schema::table('users', function (Blueprint $table) {
-        $table->string('optCode')->nullable()->after('email'); // Bạn có thể chọn vị trí đặt cột bằng `after`
+        $table->string('otpCode')->nullable()->after('email'); // Bạn có thể chọn vị trí đặt cột bằng `after`
     });
 }
 
 public function down()
 {
     Schema::table('users', function (Blueprint $table) {
-        $table->dropColumn('optCode');
+        $table->dropColumn('otpCode');
     });
 }
 };

@@ -1,25 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\client\auth;
+namespace App\Http\Controllers\admin\auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Client\ClientLoginRequest;
 use Illuminate\Support\Facades\auth;
 use App\Helpers\CreateTokenHelper;
 use App\Helpers\SmsOtpHelper;
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\AdminAccountModel;
 
-
-
-class ClientLoginController extends Controller
+class AminLoginController extends Controller
 {
-
-    public function LoginHandler(ClientLoginRequest $request)
+    public function LoginHandler(Request $request)
     {
         $credentials = $request->only('phone_number', 'password');
 
-        if (!Auth::guard('user')->attempt($credentials)) {
+        if (!Auth::guard('admin')->attempt($credentials)) {
             return $this->FailedAuthenticationResponse();
         }
 
@@ -37,13 +33,12 @@ class ClientLoginController extends Controller
     }
 
     private function SaveOtp($otp ,$phone_number){
-        $user = User::where('phone_number', $phone_number)->first();
+        $user = AdminAccountModel::where('phone_number', $phone_number)->first();
 
         $user->otpCode = $otp;
 
         $user->save();
     }
-
     private function FailedAuthenticationResponse()
     {
         return response()->json([

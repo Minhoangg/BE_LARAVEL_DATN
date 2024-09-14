@@ -5,7 +5,7 @@ namespace App\Http\Resources\admin\auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LoginResource extends JsonResource
+class AdminLoginResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,9 +15,15 @@ class LoginResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'user' => $this->username,
             'email' => $this->email,
-            'name' => $this->name,
             'phone_number' => $this->phone_number,
+            'date_of_birth' => $this->date_of_birth,
+            'role' => [
+                'role_id' => $this->role_id,
+                'role_name' => $this->role->name,
+                'role_description' => $this->role->description,
+            ],
         ];
     }
 }
