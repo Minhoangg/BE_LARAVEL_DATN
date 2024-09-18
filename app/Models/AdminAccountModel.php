@@ -36,6 +36,9 @@ class AdminAccountModel extends  Authenticatable implements JWTSubject
         'email',
         'date_of_birth',
         'role_id',
+        'password',
+        'created_at',
+        'updated_at',
     ];
 
     /**

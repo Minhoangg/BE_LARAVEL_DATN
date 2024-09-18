@@ -14,7 +14,7 @@ class Users_Seeder extends Seeder
      */
     public function run(): void
     {
-        // Tạo dữ liệu mẫu cho bảng users
+
         DB::table('users')->insert([
             [
                 'name' => 'Lương Minh Hoàng',
@@ -25,5 +25,23 @@ class Users_Seeder extends Seeder
                 'updated_at' => now(),
             ],
         ]);
+
+        // Array to hold the data for 20 users
+        $users = [];
+
+        // Create 20 sample users
+        for ($i = 1; $i <= 20; $i++) {
+            $users[] = [
+                'name' => 'User ' . $i,
+                'email' => 'user' . $i . '@example.com',
+                'phone_number' => '090000000' . $i,
+                'password' => Hash::make('password' . $i), // Encrypt password
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        // Insert the users into the 'users' table
+        DB::table('users')->insert($users);
     }
 }
