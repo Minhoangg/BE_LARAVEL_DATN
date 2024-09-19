@@ -29,6 +29,31 @@ class UserController extends Controller
         }
     }
 
+    public function show(string $id)
+{
+    try {
+        // Tìm bản ghi theo id
+        $account = User::findOrFail($id);
+
+        return response()->json([
+            'status_code' => 200,
+            'message' => 'User Details',
+            'data' => new UserListResource($account),
+        ], 200);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json([
+            'status_code' => 404,
+            'message' => 'User not found'
+        ], 404);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status_code' => 500,
+            'message' => 'An error occurred while retrieving the user details'
+        ], 500);
+    }
+}
+
+
     public function update(Request $request, string $id)
     {
         try {

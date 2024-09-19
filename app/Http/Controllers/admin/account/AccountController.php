@@ -32,6 +32,30 @@ class AccountController extends Controller
         }
     }
 
+    public function show(string $id)
+{
+    try {
+        $account = AdminAccountModel::findOrFail($id);
+
+        return response()->json([
+            'status_code' => 200,
+            'message' => 'Admin Account Details',
+            'data' => new AdminAccountResource($account),
+        ], 200);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json([
+            'status_code' => 404,
+            'message' => 'Admin Account not found'
+        ], 404);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status_code' => 500,
+            'message' => 'An error occurred while retrieving the user details'
+        ], 500);
+    }
+}
+
+
     public function store(AccountRequest $request)
     {
         try {
