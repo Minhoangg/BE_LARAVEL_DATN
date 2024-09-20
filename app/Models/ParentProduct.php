@@ -15,5 +15,15 @@ class ParentProduct extends Model
         'desc',
         'short_desc',
         'avatar',
+        'rating',
     ];
+
+    public function categories()
+    {
+        return $this->belongsTo(ProductCategory::class, 'categories_id');
+    }
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'parent_id');
+    }
 }
