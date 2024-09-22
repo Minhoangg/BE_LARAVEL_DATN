@@ -18,25 +18,6 @@ class AdminAccountSeeder extends Seeder
     public function run(): void
     {
 
-
-        AdminAccountModel::create([
-            'username' => 'Lương Minh Hoàng - ADMIN',
-            'phone_number' => '0947702541',
-            'password' => Hash::make('12345678'),
-            'email' => 'admin@gmail.com',
-            'date_of_birth' => '2004-12-06',
-            'role_id' => 1,
-        ]);
-
-        AdminAccountModel::create([
-            'username' => 'Kiện Ngô - NV_BV',
-            'phone_number' => '0987654321',
-            'password' => Hash::make('12345678'),
-            'email' => 'kienngo@gmail.com',
-            'date_of_birth' => '1992-02-02',
-            'role_id' => 2,
-        ]);
-
         $faker = Faker::create();
 
         $roles = [1, 2, 3]; // Admin, Editor, Viewer
@@ -45,14 +26,14 @@ class AdminAccountSeeder extends Seeder
             DB::table('admin_accounts')->insert([
                 'id' => $i,
                 'username' => $faker->userName,
-                'phone_number' => $faker->numerify('##########'),
+                'phone_number' => '0947702541',
                 'email' => $faker->unique()->safeEmail,
                 'date_of_birth' => $faker->date('Y-m-d', '-20 years'),
                 'role_id' => $faker->randomElement($roles),
+                'password' => Hash::make('12345678'),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
         }
-
     }
 }

@@ -18,8 +18,8 @@ class Posts_Seeder extends Seeder
         for ($i = 1; $i <= 10; $i++) {
             $posts[] = [
                 'title' => "Bài viết mẫu số $i",
-                'id_admin_account' => rand(1, 5), // Giả sử có 5 admin account
-                'category_id' => rand(1, 3), // Giả sử có 3 danh mục
+                'id_admin_account' => rand(1, 2), // Giả sử có 5 admin account
+                'categories_id' => rand(1, 3), // Giả sử có 3 danh mục
                 'tag' => "tag$i",
                 'content' => "Đây là nội dung của bài viết mẫu số $i",
                 'author' => "Tác giả $i",
