@@ -21,8 +21,10 @@ class DatabaseSeeder extends Seeder
             Post_Categories_Seeder::class,
             Posts_Seeder::class,
             StatusCommentPostSeeder::class,
-            CommentPostSeeder::class,
-        
+            CommentPostSeeder::class,   
+            ProductCategoriesSeeder::class,
+            ParentProductsSeeder::class,
+            ProductsSeeder::class,
         ]);
     }
 }
