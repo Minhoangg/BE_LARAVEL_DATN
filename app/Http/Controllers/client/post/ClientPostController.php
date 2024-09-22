@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class ClientPostController extends Controller
 {
+    public function __construct() {
+        $this->middleware(function ($request, $next) {
+            return $next($request)
+                ->header('Access-Control-Allow-Origin', '*')
+                ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+                ->header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
+        });
+    }
     /**
      * Display a listing of the resource.
      */
@@ -61,15 +69,22 @@ class ClientPostController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        $post = Post::findOrFail($id);
-        return response()->json
-        ([
-            'success'=>true,
-            'data' =>$post,
-            'message'=> "Tải thành công",
-        ],200);
-    }
+{
+    $post = Post::with([
+        'author:id,username', 
+        'category:id,name', 
+        'comments.user:id,name'
+    ])->findOrFail($id);
+
+    return response()->json([
+        'success' => true,
+        'data' => [
+            'post' => $post // Lấy ra các comment thuộc về bài viết này
+        ],
+        'message' => "Tải thành công",
+    ], 200);
+}
+
 
     /**
      * Show the form for editing the specified resource.

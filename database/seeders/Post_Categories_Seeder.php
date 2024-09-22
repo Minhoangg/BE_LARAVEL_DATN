@@ -15,11 +15,16 @@ class Post_Categories_Seeder extends Seeder
     {
         // Tạo dữ liệu mẫu cho bảng users
         DB::table('post_categories')->insert([
-            [
-                'name' => 'minh nhưt',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+            ['name' => 'Tin tức', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Công nghệ', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Thể thao', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Giải trí', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Kinh doanh', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Khoa học', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Sức khỏe', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Du lịch', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Giáo dục', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Ẩm thực', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

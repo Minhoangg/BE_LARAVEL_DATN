@@ -10,12 +10,19 @@ class Post extends Model
 {
     protected $table = 'posts';
     use HasFactory;
-    protected $fillable = ['title', 'id_admin_account', 'category_id', 'tag', 'content', 'author'];
+    protected $fillable = ['title', 'id_admin_account', 'category_id', 'tag', 'content', 'author','image'];
 
+
+
+    public function comments()
+{
+    return $this->hasMany(CommentPost::class, 'post_id');
+}   
     /**
      * Quan hệ với bảng admin_accounts (Author).
      * Mỗi bài viết thuộc về một tác giả.
      */
+    
     public function author()
     {
         return $this->belongsTo(admin_accounts::class, 'id_admin_account');

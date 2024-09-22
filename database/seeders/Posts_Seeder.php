@@ -13,18 +13,21 @@ class Posts_Seeder extends Seeder
      */
     public function run(): void
     {
-        // Tạo dữ liệu mẫu cho bảng users
-        DB::table('posts')->insert([
-            [
-                'title' => '6 Cách Đơn Giản Để Viết Bài Viết Hiệu Quả Và Chất Lượng',
-                'id_admin_account' => 1,
-                'categories_id' => 1,
-                'tag' => 'tag',
-                'content' => 'nôi dung',
-                'author' => 'minhnhut', // Mã hóa mật khẩu
+
+        $posts = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $posts[] = [
+                'title' => "Bài viết mẫu số $i",
+                'id_admin_account' => rand(1, 5), // Giả sử có 5 admin account
+                'category_id' => rand(1, 3), // Giả sử có 3 danh mục
+                'tag' => "tag$i",
+                'content' => "Đây là nội dung của bài viết mẫu số $i",
+                'author' => "Tác giả $i",
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
-        ]);
+            ];
+        }
+
+        DB::table('posts')->insert($posts);
     }
 }

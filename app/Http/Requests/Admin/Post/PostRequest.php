@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Admin\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
-use illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
@@ -26,11 +26,13 @@ class PostRequest extends FormRequest
     {
         return [
             'title'=>'required',
-            'id_admin_account'=>'required',
-            'category_id'=>'required',
-            'tag'=>'required',
+            'id_admin_account'=>'required|exists:admin_accounts,id',
+            'category_id'=>'required|exists:post_categories,id',
+            'tag'=>'required|string',
             'content'=>'required',
             'author'=>'required',
+            'image'=>'required|max:2048',
+
         ];
     }
     public function messages()
@@ -38,10 +40,14 @@ class PostRequest extends FormRequest
         return [
             'title.required'=>'tiêu đề không được để trống',
             'id_admin_account.required'=>'id admin không được để trống',
+            'id_admin_account.exists'=>'id admin không tồn tại',
             'category_id.required'=>'id chuyên mục bài viết không được để trống',
-            'tag.required'=>'tag  không được để trống',
+            'category_id.exists'=>'id chuyên mục bài viết không tồn tại',
+            'tag.required'=>'tag không được để trống',
             'content.required'=>'content không được để trống',
             'author.required'=>'author không được để trống',
+            'image.required'=>'image không được để trống',
+            'image.max'=>'image không được lớn hơn 2048kb',
         ];
     }
     protected function failedValidation(Validator $validator)

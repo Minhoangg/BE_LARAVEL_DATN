@@ -6,6 +6,8 @@ use Illuminate\Database\Seeder;
 use App\Models\AdminAccountModel;
 use App\Models\RoleAdmin;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Faker\Factory as Faker;
 
 
 class AdminAccountSeeder extends Seeder
@@ -15,6 +17,7 @@ class AdminAccountSeeder extends Seeder
      */
     public function run(): void
     {
+
 
         AdminAccountModel::create([
             'username' => 'Lương Minh Hoàng - ADMIN',
@@ -33,5 +36,23 @@ class AdminAccountSeeder extends Seeder
             'date_of_birth' => '1992-02-02',
             'role_id' => 2,
         ]);
+
+        $faker = Faker::create();
+
+        $roles = [1, 2, 3]; // Admin, Editor, Viewer
+
+        for ($i = 1; $i <= 10; $i++) {
+            DB::table('admin_accounts')->insert([
+                'id' => $i,
+                'username' => $faker->userName,
+                'phone_number' => $faker->numerify('##########'),
+                'email' => $faker->unique()->safeEmail,
+                'date_of_birth' => $faker->date('Y-m-d', '-20 years'),
+                'role_id' => $faker->randomElement($roles),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
     }
 }
