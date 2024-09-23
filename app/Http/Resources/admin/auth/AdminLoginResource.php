@@ -15,6 +15,7 @@ class AdminLoginResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'user' => $this->username,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
