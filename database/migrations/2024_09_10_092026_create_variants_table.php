@@ -14,9 +14,9 @@ class CreateVariantsTable extends Migration
     public function up()
     {
         Schema::create('variants', function (Blueprint $table) {
-            $table->id(); // Khóa chính 'id'
-            $table->string('name'); // Tên biến thể (ví dụ: màu sắc, kích thước)
-            $table->timestamps(); // Tự động thêm cột created_at và updated_at
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
         });
     }
 

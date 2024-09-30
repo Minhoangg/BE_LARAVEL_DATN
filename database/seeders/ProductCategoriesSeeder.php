@@ -18,7 +18,19 @@ class ProductCategoriesSeeder extends Seeder
                 'img_icon' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
+            [
+                'name' => 'Máy tính bảng',
+                'img_icon' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Máy tính xách tay',
+                'img_icon' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

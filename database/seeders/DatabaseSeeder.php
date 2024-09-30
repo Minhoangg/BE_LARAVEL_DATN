@@ -23,8 +23,15 @@ class DatabaseSeeder extends Seeder
             StatusCommentPostSeeder::class,
             CommentPostSeeder::class,   
             ProductCategoriesSeeder::class,
+
+            VariantsSeeder::class,
+            VariantAttributesSeeder::class,
+            ProductCategoriesSeeder::class,
+            BrandsSeeder::class,
+
             ParentProductsSeeder::class,
             ProductsSeeder::class,
+            ProductCategoriesVariantSeeder::class,
         ]);
     }
 }
