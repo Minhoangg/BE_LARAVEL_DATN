@@ -15,7 +15,7 @@ class CreateCartsTable extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id(); // Khóa chính 'id'
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Khóa ngoại liên kết với bảng 'users'
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade'); // Khóa ngoại liên kết với bảng 'users', cho phép null
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade'); // Khóa ngoại liên kết với bảng 'products'
             $table->integer('quantity'); // Số lượng sản phẩm trong giỏ hàng
             $table->timestamps(); // Tự động thêm cột created_at và updated_at

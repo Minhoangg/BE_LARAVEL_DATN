@@ -18,7 +18,7 @@ class AdminAccountSeeder extends Seeder
     public function run(): void
     {
 
-        $faker = Faker::create();
+        $faker = Faker::create() ;
 
         $roles = [1, 2, 3]; // Admin, Editor, Viewer
 

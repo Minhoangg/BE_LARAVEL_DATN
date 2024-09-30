@@ -16,7 +16,6 @@ class PostCommentController extends Controller
     {
         try {
             $search = $request->input('search');
-            $perPage = $request->input('per_page', 10); // Số lượng bình luận trên mỗi trang
 
             $query = CommentPost::with('user', 'post', 'status');
 
@@ -24,7 +23,7 @@ class PostCommentController extends Controller
                 $query->where('content', 'like', '%' . $search . '%');
             }
 
-            $commentPosts = $query->paginate($perPage);
+            $commentPosts = $query->get();
 
             return response()->json([
                 'success' => true,

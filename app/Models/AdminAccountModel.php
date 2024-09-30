@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-
+use App\Models\Post;
 class AdminAccountModel extends  Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -47,5 +47,9 @@ class AdminAccountModel extends  Authenticatable implements JWTSubject
     public function role()
     {
         return $this->belongsTo(RoleAdmin::class, 'role_id');
+    }
+    public function posts()
+    {
+        return $this->hasMany(post::class, 'author_id');
     }
 }

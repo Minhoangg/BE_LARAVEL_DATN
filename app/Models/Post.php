@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\admin_accounts;
+use App\Models\AdminAccountModel;
 use App\Models\post_categories;
 class Post extends Model
 {
@@ -25,7 +25,7 @@ class Post extends Model
     
     public function author()
     {
-        return $this->belongsTo(admin_accounts::class, 'id_admin_account');
+        return $this->belongsTo(AdminAccountModel::class, 'id_admin_account');
     }
 
     /**
