@@ -22,10 +22,8 @@ class JwtMiddleware
     public function handle($request, Closure $next)
     {
         try {
-            // Xác thực token và lấy thông tin user
+
             $user = JWTAuth::parseToken()->authenticate();
-            $garage_id = $user->garage_id;
-            $request->merge(['garage_id' => $garage_id]);
 
         } catch (TokenExpiredException $e) {
             return response()->json(['error' => 'Token has expired'], 401);
