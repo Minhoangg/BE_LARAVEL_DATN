@@ -26,8 +26,8 @@ class PostRequest extends FormRequest
     {
         return [
             'title'=>'required',
-            'id_admin_account'=>'required|exists:admin_accounts,id',
-            'category_id'=>'required|exists:post_categories,id',
+            'id_admin_account'=>'required',
+            'categories_id'=>'required',
             'tag'=>'required|string',
             'content'=>'required',
             'author'=>'required',
@@ -41,8 +41,8 @@ class PostRequest extends FormRequest
             'title.required'=>'tiêu đề không được để trống',
             'id_admin_account.required'=>'id admin không được để trống',
             'id_admin_account.exists'=>'id admin không tồn tại',
-            'category_id.required'=>'id chuyên mục bài viết không được để trống',
-            'category_id.exists'=>'id chuyên mục bài viết không tồn tại',
+            'categories_id.required'=>'id chuyên mục bài viết không được để trống',
+            'categories_id.exists'=>'id chuyên mục bài viết không tồn tại',
             'tag.required'=>'tag không được để trống',
             'content.required'=>'content không được để trống',
             'author.required'=>'author không được để trống',

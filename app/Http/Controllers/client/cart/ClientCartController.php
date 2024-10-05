@@ -5,6 +5,8 @@ namespace App\Http\Controllers\client\cart;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CartModel;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 class ClientCartController extends Controller
 {
     /**
@@ -12,11 +14,13 @@ class ClientCartController extends Controller
      */
     public function index()
     {
-        $carts = CartModel::paginate(10);
+        $user = JWTAuth::parseToken();
+
+        $carts = CartModel::where('user_id', $user)->all();
         if($carts->isEmpty()){
-            return response()->json(['message' => 'Không có sản phẩm trong giỏ hàng'], 404);
+            return response()->json(['message' => 'Không có sản phẩm trong giỏ hàng của bạn'], 404);
         }
-        return response()->json($carts,200);
+        return response()->json($user,200);
     }
 
     /**
