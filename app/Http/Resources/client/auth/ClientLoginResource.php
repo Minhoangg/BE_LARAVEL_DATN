@@ -15,9 +15,11 @@ class ClientLoginResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
+            'shipping_address_id' => $this->shipping_address_id,
         ];
     }
 }
