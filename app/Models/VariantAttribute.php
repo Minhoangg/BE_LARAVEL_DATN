@@ -19,4 +19,8 @@ class VariantAttribute extends Model
     {
         return $this->belongsTo(Variant::class, 'id_variant', 'id');
     }
+    public function productVariants()
+{
+    return $this->hasMany(ProductVariant::class, 'id');
+}
 }

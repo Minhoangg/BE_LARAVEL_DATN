@@ -8,15 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class ProductVariant extends Model
 {
     use HasFactory;
-    protected $table = 'products';
-    protected $fields = [
-        'parent_id',
-        'name',
-        'price',
-        'price_sale',
-        'quantity',
-        'avatar',
-        'private_desc',
-        'tag_sale',
-    ];
+
+
+    protected $table = 'product_variants';
+
+    // Các cột được phép mass assign
+    protected $fillable= ['id_product', 'id_variant_attribute'];
+
+    // Quan hệ với bảng product
+    public function product()
+    {
+        return $this->belongsTo(Product::class,'id_product');    
+    }
+
+    public function variantAttribute()
+{
+    return $this->belongsTo(VariantAttribute::class,'id_variant_attribute');
+}
+
+
 }

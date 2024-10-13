@@ -20,7 +20,14 @@ class Product extends Model
         'tag_sale',
     ];
 
+
     public function products(){
         return $this->belongsToMany(OrderModel::class, 'product_orders', 'product_id', 'order_id');
+    }
+
+    public function productVariants()
+    {
+        return $this->hasMany(ProductVariant::class, 'id_product');
+
     }
 }
