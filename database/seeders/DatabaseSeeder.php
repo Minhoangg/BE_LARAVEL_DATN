@@ -32,6 +32,10 @@ class DatabaseSeeder extends Seeder
             ParentProductsSeeder::class,
             ProductsSeeder::class,
             ProductCategoriesVariantSeeder::class,
+
+            ShippingAddressSeeder::class,
+
+            StatusOrderSeeder::class,
         ]);
     }
 }

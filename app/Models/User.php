@@ -31,7 +31,6 @@ class User extends  Authenticatable implements JWTSubject
         'phone_number',
         'gender',
         'date_of_birth',
-        'shipping_address_id ',
         'point',
         'password',
         'remember_token',
@@ -57,4 +56,9 @@ class User extends  Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function shippingAddresses()
+    {
+        return $this->hasMany(ShippingAddressModel::class, 'user_id');
+    }
 }

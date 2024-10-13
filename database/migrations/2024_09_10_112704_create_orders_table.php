@@ -16,12 +16,13 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id(); // Khóa chính 'id'
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Khóa ngoại liên kết với bảng 'users'
-            $table->foreignId('payment_method_id')->constrained('payment_methods')->onDelete('cascade'); // Khóa ngoại liên kết với bảng 'payment_methods'
-            $table->date('order_date'); // Ngày đặt hàng
-            $table->decimal('total', 10, 2); // Tổng số tiền đơn hàng
-            $table->string('status')->default('pending'); // Trạng thái đơn hàng
-            $table->string('shipping_address'); // Địa chỉ giao hàng
-            $table->string('sku_order')->unique(); // Mã SKU đơn hàng
+            $table->decimal('total', 10, 2); // Trường total với kiểu số thập phân
+            $table->foreignId('status_id')->constrained('status_order')->onDelete('cascade'); // Khóa ngoại liên kết với bảng 'status_orders'
+            $table->string('sku_order'); // Trường sku_order
+            $table->string('province_code'); // Trường province_code
+            $table->string('district_code'); // Trường district_code
+            $table->string('ward_code'); // Trường ward_code
+            $table->string('street_address'); // Trường street_address
             $table->timestamps(); // Tự động thêm cột created_at và updated_at
         });
     }
