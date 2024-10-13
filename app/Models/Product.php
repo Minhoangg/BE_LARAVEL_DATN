@@ -19,4 +19,8 @@ class Product extends Model
         'private_desc',
         'tag_sale',
     ];
+    public function productVariants()
+    {
+        return $this->hasMany(ProductVariant::class, 'id_product');
+    }
 }

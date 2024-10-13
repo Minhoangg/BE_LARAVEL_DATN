@@ -14,4 +14,8 @@ class VariantAttribute extends Model
         'color_code',
         'id_variant',
     ];
+    public function productVariants()
+{
+    return $this->hasMany(ProductVariant::class, 'id');
+}
 }

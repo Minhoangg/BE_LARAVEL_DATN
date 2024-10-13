@@ -6,7 +6,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class CreateTokenHelper {
 
-    private const TOKEN_TTL_CLIENT = 1;
+    private const TOKEN_TTL_CLIENT = 60;
     private const TOKEN_TTL_ADMIN = 60;
 
     public static function createTokenClient($user)
