@@ -17,6 +17,9 @@ class ShippingAddressSeeder extends Seeder
             'city' => 'Hanoi',
             'district' => 'Dong Da',
             'ward' => 'Lang Ha',
+            'city_code' => 217,
+            'district_code' => 1756,
+            'ward_code' => 510513,
             'street_address' => '123 Hoang Cau',
         ]);
 

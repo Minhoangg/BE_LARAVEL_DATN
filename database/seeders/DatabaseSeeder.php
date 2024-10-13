@@ -36,6 +36,9 @@ class DatabaseSeeder extends Seeder
             ShippingAddressSeeder::class,
 
             StatusOrderSeeder::class,
+
+            OrderSeeder::class,
+            OrderDetailSeeder::class,
         ]);
     }
 }

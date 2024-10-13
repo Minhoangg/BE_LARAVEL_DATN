@@ -22,7 +22,7 @@ class Product extends Model
 
 
     public function products(){
-        return $this->belongsToMany(OrderModel::class, 'product_orders', 'product_id', 'order_id');
+        return $this->belongsToMany(OrderModel::class, 'order_details', 'product_id', 'order_id');
     }
 
     public function productVariants()

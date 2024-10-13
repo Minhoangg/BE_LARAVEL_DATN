@@ -13,6 +13,25 @@ use App\Models\ShippingAddressModel;
 class ShippignAddressController extends Controller
 {
 
+    public function getAll()
+    {
+        try {
+            $userId = JWTAuth::parseToken()->getPayload()->get('sub');
+            $user = User::find($userId)->shippingAddresses;
+
+            if (!$user) {
+                return response()->json(['error' => 'User not authenticated'], 401);
+            }
+
+            return response()->json([
+                'message' => 'Shipping address retrieved successfully',
+                'shipping_address' => $user
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Could not process the request', 'details' => $e->getMessage()], 500);
+        }
+    }
+
     public function getById($id)
     {
         try {
