@@ -34,6 +34,12 @@ class VariantController extends Controller
         }
     }
 
+    public function formatVariantData()
+    {
+        $variants = Variant::with(['variantAttributes:id,name,id_variant'])->get(['id', 'name']);
+        return $variants;
+    }
+
     public function create(Request $request)
     {
         try {

@@ -12,4 +12,8 @@ class Variant extends Model
     protected $fields = [
         'name',
     ];
+    public function variantAttributes()
+    {
+        return $this->hasMany(VariantAttribute::class, 'id_variant', 'id');
+    }
 }

@@ -14,4 +14,9 @@ class VariantAttribute extends Model
         'color_code',
         'id_variant',
     ];
+
+    public function variant()
+    {
+        return $this->belongsTo(Variant::class, 'id_variant', 'id');
+    }
 }
