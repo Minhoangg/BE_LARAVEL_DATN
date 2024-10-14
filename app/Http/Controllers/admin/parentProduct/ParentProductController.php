@@ -25,21 +25,34 @@ class ParentProductController extends Controller
     public function index()
     {
         try {
-            $VariantProducts = ParentProduct::where('is_variant_product', true)->get(['id', 'name', 'avatar']);
-            $simpleProducts = ParentProduct::where('is_variant_product', false)->get(['id', 'name', 'avatar']);
+            // Lấy danh sách sản phẩm biến thể
+            $variantProducts = ParentProduct::where('is_variant_product', false)->get(['id', 'name', 'avatar']);
 
-            if ($VariantProducts->isEmpty() && $simpleProducts->isEmpty()) {
+            // Lấy danh sách sản phẩm đơn giản
+            $simpleProducts = ParentProduct::where('is_variant_product', true)->get();
+            // Khởi tạo mảng chứa các sản phẩm con của sản phẩm đơn giản
+            $listChillOfSimpleProducts = [];
+            // Duyệt qua từng sản phẩm đơn giản
+            foreach ($simpleProducts as $product) {
+                // Lấy danh sách sản phẩm con
+                $children = $product->products()->get(['id', 'name', 'avatar', 'price', 'price_sale'])->toArray();
+                $listChillOfSimpleProducts[] = $children;
+            }
+
+            // Kiểm tra nếu không có sản phẩm
+            if ($variantProducts->isEmpty() && empty($listChillOfSimpleProducts)) {
                 return response()->json([
                     'success' => false,
                     'error' => 'Chưa có sản phẩm nào trên cơ sở dữ liệu!',
                 ], 404);
             }
 
+            // Trả về dữ liệu JSON
             return response()->json([
                 'status' => true,
                 'data' => [
-                    'simpleProducts' => $simpleProducts,
-                    'variantProducts' => $VariantProducts,
+                    'simpleProducts' => $listChillOfSimpleProducts,
+                    'variantProducts' => $variantProducts,
                 ],
             ], 200);
         } catch (QueryException $exception) {
@@ -49,6 +62,7 @@ class ParentProductController extends Controller
             ], 500);
         }
     }
+
     public function detail($id)
     {
         try {

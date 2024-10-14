@@ -25,6 +25,6 @@ class ParentProduct extends Model
     }
     public function products()
     {
-        return $this->hasMany(Product::class, 'parent_id');
+        return $this->hasMany(Product::class, 'parent_id'); // 'parent_product_id' là khóa ngoại trong bảng products
     }
 }
