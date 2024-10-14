@@ -21,13 +21,13 @@ class Product extends Model
     ];
 
 
-    public function products(){
+    public function products()
+    {
         return $this->belongsToMany(OrderModel::class, 'order_details', 'product_id', 'order_id');
     }
 
     public function productVariants()
     {
         return $this->hasMany(ProductVariant::class, 'id_product');
-
     }
 }

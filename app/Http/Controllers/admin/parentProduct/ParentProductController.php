@@ -26,19 +26,25 @@ class ParentProductController extends Controller
     {
         try {
             // Lấy danh sách sản phẩm biến thể
-            $variantProducts = ParentProduct::where('is_variant_product', false)->get(['id', 'name', 'avatar']);
+            $variantProducts = ParentProduct::where('is_variant_product', 0)->get(['id', 'name', 'avatar']);
 
             // Lấy danh sách sản phẩm đơn giản
-            $simpleProducts = ParentProduct::where('is_variant_product', true)->get();
+            $simpleProducts = ParentProduct::where('is_variant_product', 1)->get();
+
             // Khởi tạo mảng chứa các sản phẩm con của sản phẩm đơn giản
             $listChillOfSimpleProducts = [];
-            // Duyệt qua từng sản phẩm đơn giản
+            // // // Duyệt qua từng sản phẩm đơn giản
             foreach ($simpleProducts as $product) {
                 // Lấy danh sách sản phẩm con
-                $children = $product->products()->get(['id', 'name', 'avatar', 'price', 'price_sale'])->toArray();
-                $listChillOfSimpleProducts[] = $children;
+                $listChillOfSimpleProducts[] = $product->products()->get(['id', 'parent_id', 'name', 'avatar', 'price', 'price_sale']);
             }
-
+            $simpleProducts = [];
+            foreach ($listChillOfSimpleProducts as $products) {
+                foreach ($products as $product) {
+                    // Lấy danh sách ảnh của sản phẩm con
+                    $simpleProducts[] = $product;
+                }
+            }
             // Kiểm tra nếu không có sản phẩm
             if ($variantProducts->isEmpty() && empty($listChillOfSimpleProducts)) {
                 return response()->json([
@@ -51,7 +57,7 @@ class ParentProductController extends Controller
             return response()->json([
                 'status' => true,
                 'data' => [
-                    'simpleProducts' => $listChillOfSimpleProducts,
+                    'simpleProducts' => $simpleProducts,
                     'variantProducts' => $variantProducts,
                 ],
             ], 200);
