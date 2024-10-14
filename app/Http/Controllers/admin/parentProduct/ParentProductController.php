@@ -17,6 +17,7 @@ use App\Http\Controllers\admin\variant\VariantController;
 class ParentProductController extends Controller
 {
     protected $variantController;
+    protected $isSimple = 1;
 
     public function __construct(VariantController $variantController)
     {
@@ -25,22 +26,16 @@ class ParentProductController extends Controller
     public function index()
     {
         try {
-            $parentProducts = ParentProduct::get(['id', 'name', 'avatar']);
-            if ($parentProducts->isEmpty()) {
+            $VariantProducts = ParentProduct::where('is_variant_product', false)->get(['id', 'name', 'avatar']);
+            $simpleProducts = ParentProduct::where('is_variant_product', true)->get(['id', 'name', 'avatar']);
+
+            if ($VariantProducts->isEmpty() && $simpleProducts->isEmpty()) {
                 return response()->json([
                     'success' => false,
                     'error' => 'Chưa có sản phẩm nào trên cơ sở dữ liệu!',
                 ], 404);
             }
-            $simpleProducts = [];
-            $VariantProducts = [];
-            foreach ($parentProducts as $product) {
-                if ($this->checkIsSimpleProduct($product->id)) {
-                    $VariantProducts[] = $product;
-                } else {
-                    $simpleProducts[] = $product;
-                }
-            }
+
             return response()->json([
                 'status' => true,
                 'data' => [
@@ -181,14 +176,6 @@ class ParentProductController extends Controller
                 'error' => "Lỗi không xác định!",
             ], 500);
         }
-    }
-    public function checkIsSimpleProduct($parent_id)
-    {
-        $product = Product::where('parent_id', '=', $parent_id)->get();
-        if (count($product) > 1) {
-            return true;
-        }
-        return false;
     }
     public function store(Request $request, $id)
     {
