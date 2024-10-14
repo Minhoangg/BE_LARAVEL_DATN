@@ -17,7 +17,6 @@ use App\Http\Controllers\admin\variant\VariantController;
 class ParentProductController extends Controller
 {
     protected $variantController;
-    protected $isSimple = 1;
 
     public function __construct(VariantController $variantController)
     {
@@ -26,8 +25,8 @@ class ParentProductController extends Controller
     public function index()
     {
         try {
-            $VariantProducts = ParentProduct::where('is_variant_product', false)->get(['id', 'name', 'avatar']);
-            $simpleProducts = ParentProduct::where('is_variant_product', true)->get(['id', 'name', 'avatar']);
+            $VariantProducts = ParentProduct::where('is_variant_product', true)->get(['id', 'name', 'avatar']);
+            $simpleProducts = ParentProduct::where('is_variant_product', false)->get(['id', 'name', 'avatar']);
 
             if ($VariantProducts->isEmpty() && $simpleProducts->isEmpty()) {
                 return response()->json([
@@ -53,24 +52,39 @@ class ParentProductController extends Controller
     public function detail($id)
     {
         try {
+            // Tìm sản phẩm cha theo ID
             $parentProduct = ParentProduct::find($id);
+
+            // Kiểm tra nếu sản phẩm cha không tồn tại
             if (is_null($parentProduct)) {
                 return response()->json([
                     'success' => false,
                     'error' => 'Sản phẩm không tồn tại!',
                 ], 404);
             }
+
+            // Lấy danh sách sản phẩm con từ quan hệ
+            $products = $parentProduct->products;
+            if ($products->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Không có biến thể nào!',
+                ], 404);
+            }
+            // Trả về JSON với dữ liệu sản phẩm con
             return response()->json([
                 'status' => true,
-                'data' => $parentProduct,
+                'data' => $products,
             ], 200);
         } catch (QueryException $exception) {
+            // Xử lý lỗi truy vấn
             return response()->json([
                 'success' => false,
                 'error' => "Lỗi không xác định!",
             ], 500);
         }
     }
+
     public function createSimpleProduct(Request $request)
     {
         try {
