@@ -85,6 +85,7 @@ class ParentProductController extends Controller
             $parentProduct->short_desc = $request->short_desc;
             $parentProduct->avatar = $request->avatar;
             $parentProduct->rating = 0;
+            $parentProduct->is_variant_product = false;
             $parentProduct->save();  // Lưu trước để lấy id
 
             // Thêm thông tin cho product
@@ -142,6 +143,8 @@ class ParentProductController extends Controller
             $parentProduct->short_desc = $request->short_desc;
             $parentProduct->avatar = $request->avatar;
             $parentProduct->rating = 0;
+            $parentProduct->is_variant_product = true;
+
 
             $parentProduct->save();
             return response()->json([
