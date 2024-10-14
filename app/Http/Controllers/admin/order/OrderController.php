@@ -4,7 +4,6 @@ namespace App\Http\Controllers\admin\order;
 
 use App\Http\Controllers\Controller;
 use App\Models\OrderModel;
-use Illuminate\Http\Request;
 use App\Models\StatusOrder;
 
 class OrderController extends Controller

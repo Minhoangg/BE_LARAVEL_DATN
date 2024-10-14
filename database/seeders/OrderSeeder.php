@@ -18,6 +18,7 @@ class OrderSeeder extends Seeder
                 'user_id' => 1,
                 'total' => 500000, // Giá trị đơn hàng
                 'status_id' => 1, // Trạng thái đơn hàng
+                'paymend_status_id' => 1, // Chưa thanh toán
                 'sku_order' => Str::random(10), // Tạo SKU ngẫu nhiên
                 'province_code' => 'An Giang', // Mã tỉnh
                 'district_code' => 'Huyện Phú Tân', // Mã quận/huyện
@@ -27,9 +28,10 @@ class OrderSeeder extends Seeder
             ],
             [
                 'user_id' => 2,
-                'total' => 250000, 
+                'total' => 250000,
                 'status_id' => 1,
-                'sku_order' => Str::random(10), 
+                'paymend_status_id' => 2, // Đã thanh toán
+                'sku_order' => Str::random(10),
                 'province_code' => 'An Giang', // Mã tỉnh
                 'district_code' => 'Huyện Phú Tân', // Mã quận/huyện
                 'ward_code' => 'Xã Phú Bình', // Mã phường/xã

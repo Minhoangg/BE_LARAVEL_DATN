@@ -27,6 +27,11 @@ class OrderModel extends Model
         return $this->belongsTo(StatusOrder::class, 'status_id', 'id');
     }
 
+    public function paymendStatus()
+    {
+        return $this->belongsTo(StatusPaymend::class, 'paymend_status_id', 'id');
+    }
+
     public function products(){
         return $this->belongsToMany(Product::class, 'order_details', 'order_id', 'product_id')
         ->withPivot('total');
