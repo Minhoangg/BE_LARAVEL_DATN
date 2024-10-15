@@ -11,5 +11,5 @@ Route::prefix('/product')->group(function () {
     Route::delete('/delete/{id}', [ProductController::class, 'destroy']); //->middleware('auth.jwt')
     Route::post('/create', [ProductController::class, 'create']); //->middleware('auth.jwt')
     Route::get('detail/{id}', [ProductController::class, 'detail']); //->middleware('auth.jwt')
-    Route::get('/dataForCreate', [ProductController::class, 'dataForCreate']); //->middleware('auth.
+    Route::get('/dataForCreate/{id}', [ProductController::class, 'dataForCreate']); //->middleware('auth.
 });
