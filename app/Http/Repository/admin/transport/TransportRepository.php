@@ -30,17 +30,6 @@ class TransportRepository
         return $orders;
     }
 
-    private function getPivotByOrderId($order_id)
-    {
-        $pivots = OrderModel::find($order_id)->products;
-
-        $total = $pivots->sum(function ($product) {
-            return $product->pivot->total;
-        });
-
-        return $total;
-    }
-
     private function getInforOrderById($order_id)
     {
         $order = OrderModel::find($order_id);
@@ -52,11 +41,9 @@ class TransportRepository
     {
         $userInfor = $this->getInforUserByOrderId($request->order_id);
 
-        $total = $this->getPivotByOrderId($request->order_id);
-
         $orderInfor = $this->getInforOrderById($request->order_id);
 
-        $codAmount = ($orderInfor['paymend_status_id'] == 1) ? $total : null;
+        $codAmount = ($orderInfor['paymend_status_id'] == 1) ? intval($orderInfor['total']) : 0;
 
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
