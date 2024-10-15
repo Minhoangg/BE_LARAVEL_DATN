@@ -14,4 +14,5 @@ Route::prefix('/parent-product')->group(function () {
     Route::post('/create-product-variant', [ParentProductController::class, 'createProductVariant']);
     Route::get('detail/{id}', [ParentProductController::class, 'detail']); //->middleware('auth.jwt')
     Route::get('data-for-create', [ParentProductController::class, 'dataForCreate']);
+    Route::get('get-product-variants/{id}', [ParentProductController::class, 'getProductVariants']);
 });

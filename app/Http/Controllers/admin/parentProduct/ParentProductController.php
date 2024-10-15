@@ -31,20 +31,8 @@ class ParentProductController extends Controller
             // Lấy danh sách sản phẩm đơn giản
             $simpleProducts = ParentProduct::where('is_variant_product', 1)->get();
 
-            // Khởi tạo mảng chứa các sản phẩm con của sản phẩm đơn giản
-            $listChillOfSimpleProducts = [];
-            // // // Duyệt qua từng sản phẩm đơn giản
-            foreach ($simpleProducts as $product) {
-                // Lấy danh sách sản phẩm con
-                $listChillOfSimpleProducts[] = $product->products()->get(['id', 'parent_id', 'name', 'avatar', 'price', 'price_sale']);
-            }
-            $simpleProducts = [];
-            foreach ($listChillOfSimpleProducts as $products) {
-                foreach ($products as $product) {
-                    // Lấy danh sách ảnh của sản phẩm con
-                    $simpleProducts[] = $product;
-                }
-            }
+            $listChillOfSimpleProducts = $this->getChill($simpleProducts);
+
             // Kiểm tra nếu không có sản phẩm
             if ($variantProducts->isEmpty() && empty($listChillOfSimpleProducts)) {
                 return response()->json([
@@ -68,7 +56,53 @@ class ParentProductController extends Controller
             ], 500);
         }
     }
-
+    public function getChill($parentProducts)
+    {
+        $products = [];
+        // // // Duyệt qua từng sản phẩm đơn giản
+        foreach ($parentProducts as $product) {
+            // Lấy danh sách sản phẩm con
+            $products[] = $product->products()->get(['id', 'parent_id', 'name', 'avatar', 'price', 'price_sale']);
+        }
+        $products = $this->formaToSimpleArray($products);
+        return $products;
+    }
+    public function formaToSimpleArray($arrayFormat)
+    {
+        $Products = [];
+        foreach ($arrayFormat as $products) {
+            foreach ($products as $product) {
+                // Lấy danh sách ảnh của sản phẩm con
+                $Products[] = $product;
+            }
+        }
+        return $Products;
+    }
+    public function getProductVariants($parent_id)
+    {
+        try {
+            $variantProducts = ParentProduct::where('is_variant_product', 0)->get(['id', 'name', 'avatar']);
+            if ($variantProducts->isEmpty()) {
+                if (is_null($variantProducts)) {
+                    return response()->json([
+                        'success' => false,
+                        'error' => 'Chưa có sản phẩm nào trên cơ sở dữ liệu!',
+                    ], 404);
+                }
+            }
+            $productVariants = $this->getChill($variantProducts);
+            return response()->json([
+                'status' => true,
+                'message' => 'Lấy danh sách sản phẩm con thành công!',
+                'data' => $productVariants,
+            ]);
+        } catch (QueryException $exception) {
+            return response()->json([
+                'success' => false,
+                'error' => "Lỗi không xác định!",
+            ], 500);
+        }
+    }
     public function detail($id)
     {
         try {

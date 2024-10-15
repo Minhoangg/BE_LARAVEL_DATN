@@ -66,6 +66,7 @@ class ProductController extends Controller
             'brands' => $brands,
         ], 200);
     }
+
     public function create(Request $request)
     {
         try {
