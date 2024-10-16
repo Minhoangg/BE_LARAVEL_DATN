@@ -12,4 +12,6 @@ Route::prefix('/product')->group(function () {
     Route::post('/create', [ProductController::class, 'create']); //->middleware('auth.jwt')
     Route::get('detail/{id}', [ProductController::class, 'detail']); //->middleware('auth.jwt')
     Route::get('/dataForCreate/{id}', [ProductController::class, 'dataForCreate']); //->middleware('auth.
+    Route::get('/get-info-update/{id}', [ProductController::class, 'getInfoUpdate']); //->middleware('auth.
+    Route::get('/getProductImg/{id}', [ProductController::class, 'getProductImg']); //
 });

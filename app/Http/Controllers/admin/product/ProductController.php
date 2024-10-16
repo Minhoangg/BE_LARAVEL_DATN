@@ -37,9 +37,9 @@ class ProductController extends Controller
             foreach ($variants as $variant) {
                 $variantAttributes[] = $variant->variantAttribute;
             }
-            $Product['desc'] = $parentProduct->desc;
-            $product['short_desc'] = $parentProduct->short_desc;
-            $product['rating'] = $parentProduct->rating;
+            $Product->desc = $parentProduct->desc;
+            $Product->short_desc = $parentProduct->short_desc;
+            $Product->rating = $parentProduct->rating;
             return response()->json([
                 'status' => true,
                 'data' => [
@@ -113,8 +113,129 @@ class ProductController extends Controller
             ], 500);
         }
     }
+    public function getVariant($product_id)
+    {
+        $product = Product::find($product_id);
+        if (is_null($product)) {
+            return false;
+        }
 
-    public function updateSimple(Request $request, $id) {}
+        // Lấy tất cả các variants của product
+        $productVariants = $product->productVariants()->get();
+        $variantAttributesFormat = [];
+        $variantFormat = [];
+
+        foreach ($productVariants as $variant) {
+            // Lấy tất cả các variantAttributes liên quan đến variant này
+            $variantAttributes = $variant->variantAttribute()->get();
+
+            // Lặp qua từng variantAttribute
+            foreach ($variantAttributes as $variantAttribute) {
+                // Lấy thông tin của variant dựa trên id_variant
+                $variantDetail = Variant::find($variantAttribute->id_variant);
+                if ($variantDetail) {
+                    $variantFormat[] = [
+                        'id' => $variantDetail->id,
+                        'name' => $variantDetail->name,
+                    ];
+                }
+
+                // Đưa thông tin vào mảng
+                $variantAttributesFormat[] = [
+                    'id' => $variantAttribute->id,
+                    'id_variant' => $variantAttribute->id_variant,
+                    'name' => $variantAttribute->name,
+                    'color_code' => $variantAttribute->color_code,
+                ];
+            }
+        }
+
+        // Tạo mảng chứa thông tin variant và variant attributes
+        $variantDetails = [
+            'variant' => $variantFormat,
+            'variant_attributes' => $variantAttributesFormat,
+            'product_variant' => $productVariants,
+        ];
+
+        // Kiểm tra kết quả
+
+        return $variantDetails;
+    }
+    public function getProductImg($product_id)
+    {
+        $images = ProductImage::where('product_id', '=', $product_id)->get();
+        $imagesFormat = [];
+        foreach ($images as $image) {
+            $imagesFormat[] = [
+                'id' => $image->id,
+                'product_id' => $image->product_id,
+                'image_url' => $image->image_url,
+                'alt_text' => $image->alt_text,
+            ];
+        }
+        return $imagesFormat;
+    }
+    public function updateSimple(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            $product = Product::find($id);
+            if (is_null($product)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Sản phẩm không tồn tại!',
+                ], 404);
+            }
+            // cap nhat thong tin cua thang cha
+            $parentProduct = ParentProduct::find($product->parent_id);
+            $parentProduct->desc = $request->desc;
+            $parentProduct->short_desc = $request->short_desc;
+            $parentProduct->rating = $request->rating;
+            $parentProduct->save();
+
+            // cap nhat thong tin cua thg con
+            $product->name = $request->name;
+            $product->price = $request->price;
+            $product->price_sale = $request->price_sale;
+            $product->quantity = $request->quantity;
+            $product->save();
+
+            // Xóa tất cả variant của sản phẩm 
+            $productVariants = $product->productVariants()->get();
+            foreach ($productVariants as $variant) {
+                $variant->delete();
+            }
+            // xoa tat ca cac anh
+            $images = ProductImage::where('product_id', '=', $product->id)->get();
+            foreach ($images as $img) {
+                $img->delete();
+            }
+
+            // Thêm danh sách ảnh cho product
+            foreach ($request->product_images as $img) {
+                $productImage = new ProductImage;
+                $productImage->product_id = $product->id;  // Liên kết với product
+                $productImage->image_url = $img['image_url'];  // Đường dẫn ảnh
+                $productImage->alt_text = $img['alt_text'];  // Alt text (chú thích ảnh)
+                $productImage->save();
+            }
+
+            // Thêm các biến thể cho sản phẩm
+            foreach ($request->variant_attributes as $variant_attribute) {
+                $productVariants = new ProductVariant;
+                $productVariants->id_variant_attribute = $variant_attribute['id_variant_attribute'];
+                $productVariants->id_product = $product->id;
+                $productVariants->save();
+            }
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'error' => "Lỗi không xác định!",
+                'message' => $exception->getMessage(),
+            ], 500);
+        }
+    }
     public function updateVariant(Request $request, $id)
     {
         try {
@@ -131,6 +252,34 @@ class ProductController extends Controller
             $product->price_sale = $request->price_sale;
             $product->quantity = $request->quantity;
             $product->save();
+
+            // Xóa tất cả variant của sản phẩm 
+            $productVariants = $product->productVariants()->get();
+            foreach ($productVariants as $variant) {
+                $variant->delete();
+            }
+            // xoa tat ca cac anh
+            $images = ProductImage::where('product_id', '=', $product->id)->get();
+            foreach ($images as $img) {
+                $img->delete();
+            }
+
+            // Thêm danh sách ảnh cho product
+            foreach ($request->product_images as $img) {
+                $productImage = new ProductImage;
+                $productImage->product_id = $product->id;  // Liên kết với product
+                $productImage->image_url = $img['image_url'];  // Đường dẫn ảnh
+                $productImage->alt_text = $img['alt_text'];  // Alt text (chú thích ảnh)
+                $productImage->save();
+            }
+
+            // Thêm các biến thể cho sản phẩm
+            foreach ($request->variant_attributes as $variant_attribute) {
+                $productVariants = new ProductVariant;
+                $productVariants->id_variant_attribute = $variant_attribute['id_variant_attribute'];
+                $productVariants->id_product = $product->id;
+                $productVariants->save();
+            }
         } catch (\Exception $exception) {
             DB::rollBack();
             return response()->json([
@@ -140,9 +289,21 @@ class ProductController extends Controller
             ], 500);
         }
     }
-    public function getVariantAttribute() {}
 
-    public function getInfoUpdate($id) {}
+    public function getInfoUpdate($id_product)
+    {
+        $getProductImg = $this->getProductImg($id_product);
+        $getVariant = $this->getVariant($id_product);
+
+        if (!$getProductImg && !$getVariant) {
+            return false;
+        }
+        return $data = [
+            'variants' => $getVariant,
+            'product_images' => $getProductImg,
+        ];
+    }
+
 
     public function destroy($id)
     {
