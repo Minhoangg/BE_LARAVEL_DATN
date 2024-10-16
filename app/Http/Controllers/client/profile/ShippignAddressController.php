@@ -71,6 +71,9 @@ class ShippignAddressController extends Controller
                 'city' => $request->city,
                 'district' => $request->district,
                 'ward' => $request->ward,
+                'city_code' => $request->city_code,
+                'district_code' => $request->district_code,
+                'ward_code' => $request->ward_code,
                 'street_address' => $request->street_address,
                 'user_id' => $user->id,
             ]);
@@ -105,6 +108,9 @@ class ShippignAddressController extends Controller
                 'city' => $request->city,
                 'district' => $request->district,
                 'ward' => $request->ward,
+                'city_code' => $request->city_code,
+                'district_code' => $request->district_code,
+                'ward_code' => $request->ward_code,
                 'street_address' => $request->street_address,
             ]);
 
