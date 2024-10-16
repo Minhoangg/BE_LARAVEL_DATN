@@ -39,6 +39,21 @@ class ShippingAddressRequest extends FormRequest
                 'string',    // Must be a string
                 'max:255',   // Max length of 255 characters
             ],
+            'city_code' => [
+                'required',  // City is mandatory
+                'string',    // Must be a string
+                'max:255',   // Max length of 255 characters
+            ],
+            'district_code' => [
+                'required',  // District is mandatory
+                'string',    // Must be a string
+                'max:255',   // Max length of 255 characters
+            ],
+            'ward_code' => [
+                'required',  // Ward is mandatory
+                'string',    // Must be a string
+                'max:255',   // Max length of 255 characters
+            ],
             'street_address' => [
                 'required',  // Street address is mandatory
                 'string',    // Must be a string
@@ -64,6 +79,15 @@ class ShippingAddressRequest extends FormRequest
             'ward.required' => 'Phường/xã là bắt buộc.',
             'ward.string' => 'Phường/xã phải là chuỗi ký tự.',
             'ward.max' => 'Phường/xã không được vượt quá 255 ký tự.',
+            'city_code.required' => 'Thành phố là bắt buộc.',
+            'city_code.string' => 'Thành phố phải là chuỗi ký tự.',
+            'city_code.max' => 'Thành phố không được vượt quá 255 ký tự.',
+            'district_code.required' => 'Quận/huyện là bắt buộc.',
+            'district_code.string' => 'Quận/huyện phải là chuỗi ký tự.',
+            'district_code.max' => 'Quận/huyện không được vượt quá 255 ký tự.',
+            'ward_code.required' => 'Phường/xã là bắt buộc.',
+            'ward_code.string' => 'Phường/xã phải là chuỗi ký tự.',
+            'ward_code.max' => 'Phường/xã không được vượt quá 255 ký tự.',
             'street_address.required' => 'Địa chỉ là bắt buộc.',
             'street_address.string' => 'Địa chỉ phải là chuỗi ký tự.',
             'street_address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',

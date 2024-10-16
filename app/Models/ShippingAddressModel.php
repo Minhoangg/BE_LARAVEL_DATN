@@ -15,6 +15,9 @@ class ShippingAddressModel extends Model
         'city',
         'district',
         'ward',
+        'city_code',
+        'district_code',
+        'ward_code',
         'street_address',
         'user_id',
     ];
