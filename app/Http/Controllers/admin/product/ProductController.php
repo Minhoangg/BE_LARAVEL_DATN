@@ -34,8 +34,20 @@ class ProductController extends Controller
             $parentProduct = ParentProduct::find($Product->parent_id);
             $variants = ProductVariant::where('id_product', '=', $id)->get();
             $variantAttributes = [];
-            foreach ($variants as $variant) {
-                $variantAttributes[] = $variant->variantAttribute;
+            $formatVariant = [];
+            foreach ($variants as $v) {
+                $variantAttributes[] = $v->variantAttribute;
+                $formatVariant[] = $v->variantAttribute->variant;
+            }
+            $product_images = [];
+            $product_img = ProductImage::where('product_id', '=', $id)->get();
+            foreach ($product_img as $proImg) {
+                $product_images[] = [
+                    'id' => $proImg->id,
+                    'product_id' => $proImg->product_id,
+                    'image_url' => $proImg->image_url,
+                    'alt_text' => $proImg->alt_text,
+                ];
             }
             $Product->desc = $parentProduct->desc;
             $Product->short_desc = $parentProduct->short_desc;
@@ -45,6 +57,7 @@ class ProductController extends Controller
                 'data' => [
                     'variants_attributes' => $variantAttributes,
                     'product' => $Product,
+                    'product_images' => $product_images,
                 ],
             ], 200);
         } catch (QueryException $exception) {
