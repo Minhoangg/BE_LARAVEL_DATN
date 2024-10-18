@@ -9,13 +9,21 @@ class StatusOrderSeeder extends Seeder
 {
     public function run()
     {
-        // Các thuộc tính của danh mục điện thoại
         DB::table('status_order')->insert([
             [
-                'name' => 'Đã Duyệt'
+                'name' => 'Chờ xác nhận'
             ],
             [
-                'name' => 'Chưa Duyệt'
+                'name' => 'Đã xác nhận'
+            ],
+            [
+                'name' => 'Đang vận chuyển'
+            ],
+            [
+                'name' => 'Đã hủy'
+            ],
+            [
+                'name' => 'Thành công'
             ],
         ]);
     }

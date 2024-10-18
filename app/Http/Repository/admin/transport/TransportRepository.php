@@ -47,8 +47,8 @@ class TransportRepository
 
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
-            'Token' => '654cd50c-75b5-11ef-8e53-0a00184fe694',
-            'ShopId' => 194614
+            'Token' => env('GHN_TOKEN'),
+            'ShopId' => env('GHN_SHOP_ID'),
         ])->post(
             'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create',
             [
