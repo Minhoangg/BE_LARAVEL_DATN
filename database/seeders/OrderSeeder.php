@@ -16,29 +16,104 @@ class OrderSeeder extends Seeder
         DB::table('orders')->insert([
             [
                 'user_id' => 1,
-                'total' => 500000, // Giá trị đơn hàng
-                'status_id' => 1, // Trạng thái đơn hàng
-                'paymend_status_id' => 1, // Chưa thanh toán
-                'sku_order' => Str::random(10), // Tạo SKU ngẫu nhiên
-                'province_code' => 'An Giang', // Mã tỉnh
-                'district_code' => 'Huyện Phú Tân', // Mã quận/huyện
-                'ward_code' => 'Xã Phú Bình', // Mã phường/xã
-                'street_address' => 'ấp bình phú 1, phú bình, phú tân, an giang', // Địa chỉ chi tiết
-                'created_at' => now(), // Ngày tạo
+                'total' => 500000,
+                'status_id' => 1,
+                'paymend_status_id' => 1,
+                'sku_order' => Str::random(10),
+                'province_code' => 'An Giang',
+                'district_code' => 'Huyện Phú Tân',
+                'ward_code' => 'Xã Phú Bình',
+                'street_address' => 'ấp bình phú 1, phú bình, phú tân, an giang',
+                'created_at' => now(),
+            ],
+            // đã xác nhận có 2 trường hợp đã thanh toán và chưa thanh toán
+            [
+                'user_id' => 2,
+                'total' => 250000,
+                'status_id' => 2,
+                'paymend_status_id' => 1,
+                'sku_order' => Str::random(10),
+                'province_code' => 'An Giang',
+                'district_code' => 'Huyện Phú Tân',
+                'ward_code' => 'Xã Phú Bình',
+                'street_address' => 'ấp bình phú 1, phú bình, phú tân, an giang',
+                'created_at' => now(),
             ],
             [
                 'user_id' => 2,
                 'total' => 250000,
-                'status_id' => 1,
-                'paymend_status_id' => 2, // Đã thanh toán
+                'status_id' => 2,
+                'paymend_status_id' => 2,
                 'sku_order' => Str::random(10),
-                'province_code' => 'An Giang', // Mã tỉnh
-                'district_code' => 'Huyện Phú Tân', // Mã quận/huyện
-                'ward_code' => 'Xã Phú Bình', // Mã phường/xã
-                'street_address' => 'ấp bình phú 1, phú bình, phú tân, an giang', // Địa chỉ chi tiết
+                'province_code' => 'An Giang',
+                'district_code' => 'Huyện Phú Tân',
+                'ward_code' => 'Xã Phú Bình',
+                'street_address' => 'ấp bình phú 1, phú bình, phú tân, an giang',
                 'created_at' => now(),
             ],
-            // Thêm nhiều dữ liệu khác nếu cần
+            // đang vận chuyển có 2 trường hợp đã thanh toán và chưa thanh toán
+            [
+                'user_id' => 2,
+                'total' => 250000,
+                'status_id' => 3,
+                'paymend_status_id' => 1,
+                'sku_order' => Str::random(10),
+                'province_code' => 'An Giang',
+                'district_code' => 'Huyện Phú Tân',
+                'ward_code' => 'Xã Phú Bình',
+                'street_address' => 'ấp bình phú 1, phú bình, phú tân, an giang',
+                'created_at' => now(),
+            ],
+            [
+                'user_id' => 2,
+                'total' => 250000,
+                'status_id' => 3,
+                'paymend_status_id' => 2,
+                'sku_order' => Str::random(10),
+                'province_code' => 'An Giang',
+                'district_code' => 'Huyện Phú Tân',
+                'ward_code' => 'Xã Phú Bình',
+                'street_address' => 'ấp bình phú 1, phú bình, phú tân, an giang',
+                'created_at' => now(),
+            ],
+            // đã hủy đơn hàng có 2 trường hợp đã thanh toán và chưa thanh toán
+            [
+                'user_id' => 2,
+                'total' => 250000,
+                'status_id' => 4,
+                'paymend_status_id' => 1,
+                'sku_order' => Str::random(10),
+                'province_code' => 'An Giang',
+                'district_code' => 'Huyện Phú Tân',
+                'ward_code' => 'Xã Phú Bình',
+                'street_address' => 'ấp bình phú 1, phú bình, phú tân, an giang',
+                'created_at' => now(),
+            ],
+            [
+                'user_id' => 2,
+                'total' => 250000,
+                'status_id' => 4,
+                'paymend_status_id' => 2,
+                'sku_order' => Str::random(10),
+                'province_code' => 'An Giang',
+                'district_code' => 'Huyện Phú Tân',
+                'ward_code' => 'Xã Phú Bình',
+                'street_address' => 'ấp bình phú 1, phú bình, phú tân, an giang',
+                'created_at' => now(),
+            ],
+            // thành công
+            [
+                'user_id' => 2,
+                'total' => 250000,
+                'status_id' => 5,
+                'paymend_status_id' => 1,
+                'sku_order' => Str::random(10),
+                'province_code' => 'An Giang',
+                'district_code' => 'Huyện Phú Tân',
+                'ward_code' => 'Xã Phú Bình',
+                'street_address' => 'ấp bình phú 1, phú bình, phú tân, an giang',
+                'created_at' => now(),
+            ],
         ]);
     }
 }

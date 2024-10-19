@@ -14,6 +14,7 @@ class OrderDetailSeeder extends Seeder
     public function run(): void
     {
         DB::table('order_details')->insert([
+            // chờ xác nhận
             [
                 'order_id' => 1,
                 'product_id' => 1,
@@ -23,8 +24,9 @@ class OrderDetailSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            // đã xác nhận
             [
-                'order_id' => 1,
+                'order_id' => 2,
                 'product_id' => 2,
                 'quantity' => 1,
                 'price' => 75000,
@@ -32,8 +34,29 @@ class OrderDetailSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            // đang vận chuyển
             [
-                'order_id' => 2,
+                'order_id' => 4,
+                'product_id' => 1,
+                'quantity' => 3,
+                'price' => 20000,
+                'total' => 60000,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // đã hủy
+            [
+                'order_id' => 6,
+                'product_id' => 1,
+                'quantity' => 3,
+                'price' => 20000,
+                'total' => 60000,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            // thành công
+            [
+                'order_id' => 7,
                 'product_id' => 1,
                 'quantity' => 3,
                 'price' => 20000,

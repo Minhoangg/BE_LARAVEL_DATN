@@ -16,7 +16,7 @@ class OrderController extends Controller
 
     public function getOrderByStatus()
     {
-        $orders = StatusOrder::find(1)->orders;
+        $orders = StatusOrder::find(2)->orders;
 
         return response()->json(['orders' => $orders]);
     }
@@ -33,46 +33,46 @@ class OrderController extends Controller
     }
 
     public function createHandle(StoreOrderRequest $request)
-{
-    $userId = JWTAuth::parseToken()->getPayload()->get('sub');
+    {
+        $userId = JWTAuth::parseToken()->getPayload()->get('sub');
 
-    $totalAmount = 0;
+        $totalAmount = 0;
 
-    foreach ($request->products as $product) {
-        $productModel = Product::find($product['product_id']);
+        foreach ($request->products as $product) {
+            $productModel = Product::find($product['product_id']);
 
-        $itemTotal = $productModel->price * $product['quantity'];
+            $itemTotal = $productModel->price_sale * $product['quantity'];
 
-        $totalAmount += $itemTotal;
-    }
+            $totalAmount += $itemTotal;
+        }
 
-    $order = OrderModel::create([
-        'user_id' => $userId,
-        'total' => $totalAmount,
-        'status_id' => 1,
-        'payment_status_id' => 2,
-        'sku_order' => $this->generateRandomSku(),
-        'province_code' => $request->province_code,
-        'district_code' => $request->district_code,
-        'ward_code' => $request->ward_code,
-        'street_address' => $request->street_address,
-    ]);
-
-    foreach ($request->products as $product) {
-        $productModel = Product::find($product['product_id']);
-        $itemTotal = $productModel->price * $product['quantity'];
-
-        $order->products()->attach($product['product_id'], [
-            'quantity' => $product['quantity'],
-            'price' => $productModel->price,
-            'total' => $itemTotal,
-            'created_at' => now(),
-            'updated_at' => now(),
+        $order = OrderModel::create([
+            'user_id' => $userId,
+            'total' => $totalAmount,
+            'status_id' => 1,
+            'payment_status_id' => 2,
+            'sku_order' => $this->generateRandomSku(),
+            'province_code' => $request->province_code,
+            'district_code' => $request->district_code,
+            'ward_code' => $request->ward_code,
+            'street_address' => $request->street_address,
         ]);
-    }
 
-    return response()->json(['message' => 'Order created successfully!', 'order' => $order], 201);
-}
+        foreach ($request->products as $product) {
+            $productModel = Product::find($product['product_id']);
+            $itemTotal = $productModel->price * $product['quantity'];
+
+            $order->products()->attach($product['product_id'], [
+                'quantity' => $product['quantity'],
+                'price' => $productModel->price,
+                'total' => $itemTotal,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        return response()->json(['message' => 'Order created successfully!', 'order' => $order], 201);
+    }
 
 
     private function generateRandomSku()
