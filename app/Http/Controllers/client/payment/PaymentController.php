@@ -20,7 +20,9 @@ class PaymentController extends Controller
 
         $total = $order->total;
 
-        $qrcodeImage =  'https://qr.sepay.vn/img?acc=0947702541&bank=MB&amount=' . $total . '&des=Thanh Toán Đơn Hàng';
+        $skuOder = $order->sku_order;
+
+        $qrcodeImage =  'https://qr.sepay.vn/img?acc=0947702541&bank=MB&amount=' . $total . '&des=' . $skuOder;
 
         return response()->json(['qrcodeImage' => $qrcodeImage]);
     }

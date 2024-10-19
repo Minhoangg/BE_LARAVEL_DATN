@@ -77,7 +77,7 @@ class OrderController extends Controller
 
     private function generateRandomSku()
     {
-        $sku = 'ORD-' . strtoupper(substr(md5(uniqid(rand(), true)), 0, 8));
+        $sku = 'MDH' . strtoupper(substr(md5(uniqid(rand(), true)), 0, 8));
         return $sku;
     }
 }
