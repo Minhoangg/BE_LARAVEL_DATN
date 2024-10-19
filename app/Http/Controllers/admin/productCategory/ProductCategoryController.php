@@ -8,7 +8,7 @@ use App\Models\ProductCategory;
 use Illuminate\Database\QueryException;
 
 
-class productCategoryController extends Controller
+class ProductCategoryController extends Controller
 {
 
     // public function index()
