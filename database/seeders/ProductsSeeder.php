@@ -17,7 +17,7 @@ class ProductsSeeder extends Seeder
                 'parent_id' => 1, // ID của parent product
                 'name' => 'Iphone 16 promax 526GB',
                 'price' => 17000000,
-                'price_sale' => 15500000,
+                'price_sale' => 1000,
                 'quantity' => 60,
                 'avatar' => null, // Giá trị có thể là null
                 'private_desc' => '- Ram 12GB\r\n- Bộ nhớ trong 526GB\r\n',
@@ -29,7 +29,7 @@ class ProductsSeeder extends Seeder
                 'parent_id' => 1, // ID của parent product
                 'name' => 'Iphone 16 promax 256GB',
                 'price' => 16000000,
-                'price_sale' => 14500000,
+                'price_sale' => 1000,
                 'quantity' => 60,
                 'avatar' => null, // Giá trị có thể là null
                 'private_desc' => '- Ram 12GB\r\n- Bộ nhớ trong 256GB\r\n',
