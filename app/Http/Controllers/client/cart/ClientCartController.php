@@ -35,7 +35,7 @@ class ClientCartController extends Controller
             if ($productDetails && isset($productDetails->data)) {
                 
                 $productDetails->data->quantity = $item->quantity;
-                $productDetails->data->id = $item->quantity;
+                $productDetails->data->id = $item->id;
                 $pd[] = $productDetails;
               
             }
