@@ -60,16 +60,19 @@ class OrderController extends Controller
 
         foreach ($request->products as $product) {
             $productModel = Product::find($product['product_id']);
-            $itemTotal = $productModel->price * $product['quantity'];
+
+            $price = $productModel->price_sale ?? $productModel->price;
+            $itemTotal = $price * $product['quantity'];
 
             $order->products()->attach($product['product_id'], [
                 'quantity' => $product['quantity'],
-                'price' => $productModel->price,
+                'price' => $price,
                 'total' => $itemTotal,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
         }
+
 
         return response()->json(['message' => 'Order created successfully!', 'order' => $order], 201);
     }
