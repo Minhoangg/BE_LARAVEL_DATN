@@ -21,15 +21,11 @@ class OrderController extends Controller
         return response()->json(['orders' => $orders]);
     }
 
-    private function getPivotByOrderId($order_id)
+    public function getByOrderId($id)
     {
-        $pivots = OrderModel::find($order_id)->products;
+        $orderData = OrderModel::find($id);
 
-        $total = $pivots->sum(function ($product) {
-            return $product->pivot->total;
-        });
-
-        return $total;
+        return response()->json(['order' => $orderData]);;
     }
 
     public function createHandle(StoreOrderRequest $request)
@@ -60,16 +56,19 @@ class OrderController extends Controller
 
         foreach ($request->products as $product) {
             $productModel = Product::find($product['product_id']);
-            $itemTotal = $productModel->price * $product['quantity'];
+
+            $price = $productModel->price_sale ?? $productModel->price;
+            $itemTotal = $price * $product['quantity'];
 
             $order->products()->attach($product['product_id'], [
                 'quantity' => $product['quantity'],
-                'price' => $productModel->price,
+                'price' => $price,
                 'total' => $itemTotal,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
         }
+
 
         return response()->json(['message' => 'Order created successfully!', 'order' => $order], 201);
     }
@@ -80,4 +79,6 @@ class OrderController extends Controller
         $sku = 'MDH' . strtoupper(substr(md5(uniqid(rand(), true)), 0, 8));
         return $sku;
     }
+
+
 }

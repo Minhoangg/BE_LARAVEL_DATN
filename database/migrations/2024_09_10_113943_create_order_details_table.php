@@ -18,8 +18,8 @@ class CreateOrderDetailsTable extends Migration
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade'); // Khóa ngoại liên kết với bảng 'orders'
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade'); // Khóa ngoại liên kết với bảng 'products'
             $table->integer('quantity'); // Số lượng sản phẩm trong đơn hàng
-            $table->decimal('price', 10, 2); // Giá của sản phẩm tại thời điểm mua
-            $table->decimal('total', 10, 2); // Tổng giá trị sản phẩm trong đơn hàng (quantity * price)
+            $table->bigInteger('price'); // Giá của sản phẩm tại thời điểm mua
+            $table->bigInteger('total'); // Tổng giá trị sản phẩm trong đơn hàng (quantity * price)
             $table->timestamps(); // Tự động thêm cột created_at và updated_at
         });
     }
