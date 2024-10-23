@@ -46,7 +46,7 @@ class OrderController extends Controller
             'user_id' => $userId,
             'total' => $totalAmount,
             'status_id' => 1,
-            'paymend_status_id' => 1,
+            'payment_status_id' => 1,
             'sku_order' => $this->generateRandomSku(),
             'province_code' => $request->province_code,
             'district_code' => $request->district_code,
