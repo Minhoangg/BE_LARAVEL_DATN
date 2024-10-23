@@ -47,21 +47,43 @@ class PaymentController extends Controller
 
         if (!empty($matches)) {
             $sku_order = $matches[0];
+
             $order = OrderModel::where('sku_order', $sku_order)->first();
 
             if ($order) {
-                $order->paymend_status_id = 2;
-                $order->payment_at = now();
-                $order->save();
+                $transferAmount = $request->input('transferAmount');
+                $totalAmount = $order->total;
 
-                return response()->json(['message' => 'Payment status updated successfully.', 'transaction' => $transaction, 'order' => $order]);
+                // Xử lý các trường hợp
+                if ($transferAmount > $totalAmount) {
+                    // Trường hợp chuyển dư
+                    $order->payment_status_id = 4;
+                    $order->payment_at = now();
+                    $order->save();
+                } elseif ($transferAmount < $totalAmount) {
+                    // Trường hợp chuyển thiếu
+                    $order->payment_status_id = 3;
+                    $order->payment_at = now();
+                    $order->save();
+                } else {
+                    // Trường hợp chuyển đủ
+                    $order->payment_status_id = 2;
+                    $order->payment_at = now();
+                    $order->save();
+                }
+
+                return response()->json([
+                    'transaction' => $transaction,
+                    'order' => $order
+                ]);
             } else {
-                return response()->json(['message' => 'Order not found.'], 404);
+                return response()->json(['message' => 'Không tìm thấy đơn hàng.'], 404);
             }
         }
 
         return response()->json($transaction);
     }
+
 
     public function getbyid(Request $request, $id)
     {
