@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Khóa ngoại liên kết với bảng 'users'
             $table->integer('total');
             $table->foreignId('status_id')->constrained('status_order')->onDelete('cascade'); // Khóa ngoại liên kết với bảng 'status_orders'
-            $table->foreignId('paymend_status_id')->nullable()->constrained('paymend_status')->onDelete('cascade'); // Khóa ngoại liên kết với bảng 'status_orders'
+            $table->foreignId('payment_status_id')->nullable()->constrained('paymend_status')->onDelete('cascade'); // Khóa ngoại liên kết với bảng 'status_orders'
             $table->string('sku_order'); // Trường sku_order
             $table->string('province_code'); // Trường province_code
             $table->string('district_code'); // Trường district_code

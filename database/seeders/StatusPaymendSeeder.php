@@ -16,6 +16,12 @@ class StatusPaymendSeeder extends Seeder
             [
                 'name' => 'Đã Thanh Toán'
             ],
+            [
+                'name' => 'Thanh Toán Thiếu'
+            ],
+            [
+                'name' => 'Thanh Toán Dư'
+            ],
         ]);
     }
 }
