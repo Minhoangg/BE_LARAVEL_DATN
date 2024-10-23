@@ -29,6 +29,7 @@ class ClientCartController extends Controller
     if ($user) {
         $cartItems = CartModel::where('user_id', $user->id)->get();
         $pd = []; 
+        $totalAmount = 0;
         foreach ($cartItems as $item) {
             $productDetailsResponse = $this->productController->detail($item->product_id);
             $productDetails = $productDetailsResponse->getData();
@@ -36,13 +37,31 @@ class ClientCartController extends Controller
                 
                 $productDetails->data->quantity = $item->quantity;
                 $productDetails->data->id = $item->id;
+        
                 $pd[] = $productDetails;
+                if (!empty($productDetails->data->product->price_sale) && $productDetails->data->product->price_sale > 0) {
+                    // Nếu có giá khuyến mãi và lớn hơn 0, sử dụng giá khuyến mãi
+                    $totalAmount += $productDetails->data->product->price_sale * $item->quantity;
+                } elseif (!empty($productDetails->data->product->price) && $productDetails->data->product->price > 0) {
+                    // Nếu không có giá khuyến mãi, sử dụng giá gốc
+                    $totalAmount += $productDetails->data->product->price * $item->quantity;
+                } else {
+                    // Nếu cả giá khuyến mãi và giá gốc không hợp lệ
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Giá sản phẩm không hợp lệ.'
+                    ], 400);
+                }
+               
               
             }
         }
         return response()->json([
             'status' => true,
             'cart' => $pd, 
+            'total' => [ 
+                'amount' => number_format($totalAmount, 0, '', '.') // Format totalAmount with commas as thousands separators
+            ]
         ]);
     } else {
         return response()->json([
