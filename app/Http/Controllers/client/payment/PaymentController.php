@@ -29,60 +29,74 @@ class PaymentController extends Controller
 
     public function paymentHook(Request $request)
     {
-        $transaction = SePayTransaction::create([
-            'gateway' => $request->input('gateway'),
-            'transactionDate' => $request->input('transactionDate'),
-            'accountNumber' => $request->input('accountNumber'),
-            'subAccount' => $request->input('subAccount'),
-            'code' => $request->input('code'),
-            'content' => $request->input('content'),
-            'transferType' => $request->input('transferType'),
-            'description' => $request->input('description'),
-            'transferAmount' => $request->input('transferAmount'),
-            'referenceCode' => $request->input('referenceCode'),
-        ]);
+        // Tạo giao dịch mới từ dữ liệu trong request
+        $transaction = $this->createTransaction($request);
 
-        $content = $request->input('content');
-        preg_match('/MDH\w+/', $content, $matches);
+        // Tìm mã đơn hàng trong nội dung giao dịch
+        $sku_order = $this->extractSkuOrder($request->input('content'));
 
-        if (!empty($matches)) {
-            $sku_order = $matches[0];
-
-            $order = OrderModel::where('sku_order', $sku_order)->first();
+        if ($sku_order) {
+            // Xử lý thanh toán
+            $order = $this->processPayment($sku_order, $request);
 
             if ($order) {
-                $transferAmount = $request->input('transferAmount');
-                $totalAmount = $order->total;
-
-                // Xử lý các trường hợp
-                if ($transferAmount > $totalAmount) {
-                    // Trường hợp chuyển dư
-                    $order->payment_status_id = 4;
-                    $order->payment_at = now();
-                    $order->save();
-                } elseif ($transferAmount < $totalAmount) {
-                    // Trường hợp chuyển thiếu
-                    $order->payment_status_id = 3;
-                    $order->payment_at = now();
-                    $order->save();
-                } else {
-                    // Trường hợp chuyển đủ
-                    $order->payment_status_id = 2;
-                    $order->payment_at = now();
-                    $order->save();
-                }
-
                 return response()->json([
                     'transaction' => $transaction,
                     'order' => $order
                 ]);
-            } else {
-                return response()->json(['message' => 'Không tìm thấy đơn hàng.'], 404);
             }
+
+            return response()->json(['message' => 'Không tìm thấy đơn hàng.'], 404);
         }
 
         return response()->json($transaction);
     }
+
+    private function createTransaction(Request $request)
+    {
+        return SePayTransaction::create($request->only([
+            'gateway',
+            'transactionDate',
+            'accountNumber',
+            'subAccount',
+            'code',
+            'content',
+            'transferType',
+            'description',
+            'transferAmount',
+            'referenceCode'
+        ]));
+    }
+
+    private function extractSkuOrder($content)
+    {
+        preg_match('/MDH\w+/', $content, $matches);
+        return $matches[0] ?? null;
+    }
+
+    private function processPayment($sku_order, Request $request)
+    {
+        $order = OrderModel::where('sku_order', $sku_order)->first();
+
+        if ($order) {
+            $transferAmount = $request->input('transferAmount');
+            $totalAmount = $order->total;
+
+            if ($transferAmount > $totalAmount) {
+                $order->payment_status_id = 4;
+            } elseif ($transferAmount < $totalAmount) {
+                $order->payment_status_id = 3;
+            } else {
+                $order->payment_status_id = 2;
+            }
+
+            $order->payment_at = now();
+            $order->save();
+        }
+
+        return $order;
+    }
+
 
 
     public function getbyid(Request $request, $id)

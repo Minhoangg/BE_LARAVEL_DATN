@@ -15,7 +15,7 @@ class OrderModel extends Model
         'user_id',
         'total',
         'status_id',
-        'paymend_status_id',
+        'payment_status_id',
         'sku_order',
         'province_code',
         'district_code',
