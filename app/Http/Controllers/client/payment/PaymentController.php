@@ -97,6 +97,21 @@ class PaymentController extends Controller
         return $order;
     }
 
+    public function checkPayment(Request $request)
+    {
+        $order = OrderModel::where('id', $request->input('order_id'))->first();
+
+        switch ($order->payment_status_id) {
+            case 2:
+                return response()->json(['status' => 'success', 'message' => 'Payment successful']);
+            case 3:
+                return response()->json(['status' => 'failed', 'message' => 'Payment incomplete']);
+            case 4:
+                return response()->json(['status' => 'excess', 'message' => 'Overpayment']);
+        }
+
+        return response()->json(['status' => 'error', 'message' => 'Order not found']);
+    }
 
 
     public function getbyid(Request $request, $id)
