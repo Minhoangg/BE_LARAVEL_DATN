@@ -122,4 +122,17 @@ class ShippignAddressController extends Controller
             return response()->json(['error' => 'Could not process the request', 'details' => $e->getMessage()], 500);
         }
     }
+
+    public function deleteHandle($id)
+    {
+        $shippingAddress = ShippingAddressModel::find($id);
+
+        if ($shippingAddress) {
+            $shippingAddress->delete();
+
+            return response()->json(['status' => 'success', 'message' => 'Shipping address deleted successfully.']);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'Shipping address not found.'], 404);
+        }
+    }
 }
